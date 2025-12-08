@@ -16,7 +16,7 @@ import importlib
 
 os.environ['OMP_THREAD_LIMIT'] = '1'
 
-=poppler_path = r"C:\Users\bubga.JULIAN-LAPTOPE2\AppData\Local\Microsoft\WinGet\Packages\oschwartz10612.Poppler_Microsoft.Winget.Source_8wekyb3d8bbwe\poppler-25.07.0\Library\bin"
+=poppler_path = r"{Input_Path}"
 if poppler_path not in os.environ["PATH"]:
     os.environ["PATH"] += os.pathsep + poppler_path
 
@@ -411,5 +411,6 @@ def main():
 if _name_ == "_main_":
 
     main()
+
 
 

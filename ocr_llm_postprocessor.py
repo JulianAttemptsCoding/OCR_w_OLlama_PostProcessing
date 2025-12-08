@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# ocr_llm_postprocessor.py
 
 import argparse
 import os
@@ -418,4 +416,5 @@ def main():
     logger.info("OCR and LLM post-processing completed successfully.")
 
 if __name__ == "__main__":
+
     main()

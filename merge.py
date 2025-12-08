@@ -1,8 +1,8 @@
 import os
 import glob
 
-OUTPUT_DIR = "audiobook_parts"
-FINAL_OUTPUT = "final_audiobook_complete.mp3"
+OUTPUT_DIR = "audio_parts"
+FINAL_OUTPUT = "final_audio_complete.mp3"
 
 def merge_audio():
     if not os.path.exists(OUTPUT_DIR):
@@ -28,3 +28,4 @@ def merge_audio():
 
 if __name__ == "__main__":
     merge_audio()
+

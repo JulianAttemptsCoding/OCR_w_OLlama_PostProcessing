@@ -1,10 +1,12 @@
 import os
 import glob
 
+#for mp3 files
+
 OUTPUT_DIR = "audio_parts"
 FINAL_OUTPUT = "final_audio_complete.mp3"
 
-def merge_audio():
+def audio():
     if not os.path.exists(OUTPUT_DIR):
         print(f"Error: {OUTPUT_DIR} not found.")
         return
@@ -27,5 +29,6 @@ def merge_audio():
     print(f"Successfully created {FINAL_OUTPUT}")
 
 if __name__ == "__main__":
-    merge_audio()
+    audio()
+
 

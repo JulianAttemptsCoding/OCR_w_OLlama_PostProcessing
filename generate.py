@@ -4,8 +4,8 @@ import os
 import textwrap
 
 VOICE = "en-US-GuyNeural"
-INPUT_FILE = "final_audiobook_clean.txt"
-OUTPUT_DIR = "audiobook_parts"
+INPUT_FILE = "final_audio_clean.txt"
+OUTPUT_DIR = "audio_parts"
 CHUNK_SIZE = 4000  # Characters per chunk (approx 5-10 mins of audio)
 
 async def generate_audio():
@@ -48,7 +48,8 @@ async def generate_audio():
         communicate = edge_tts.Communicate(chunk, VOICE)
         await communicate.save(output_file)
 
-    print("Audiobook generation complete!")
+    print("Audio generation complete!")
 
 if __name__ == "__main__":
     asyncio.run(generate_audio())
+

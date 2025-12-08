@@ -12,9 +12,9 @@ logging.basicConfig(
     ]
 )
 
-def clean_audiobook_text(input_file: str, output_file: str):
+def clean_audio_text(input_file: str, output_file: str):
     """
-    Cleans the audiobook text file by removing artifacts, forms, chatter, and repetition.
+    Cleans the audio text file by removing artifacts, forms, chatter, and repetition.
     """
     if not os.path.exists(input_file):
         logging.error(f"Input file not found: {input_file}")
@@ -32,8 +32,8 @@ def clean_audiobook_text(input_file: str, output_file: str):
     chatter_pattern = re.compile(r'^(The output is|Here is|I have corrected|The text has been|This output).*', re.IGNORECASE)
     page_num_only = re.compile(r'^\s*\d+\s*$')
     
-    # End of book markers (Forms that appear at the end)
-    end_of_book_pattern = re.compile(r'Phoenix Consulting Group Contact Data File', re.IGNORECASE)
+    # End of  markers (Forms that appear at the end)
+    end_of_pattern = re.compile(r'Phoenix Consulting Group Contact Data File', re.IGNORECASE)
     
     # Specific typo fixes
     typo_map = {
@@ -49,9 +49,9 @@ def clean_audiobook_text(input_file: str, output_file: str):
         original_line = line
         line = line.strip()
         
-        # 1. Check for End of Book
-        if end_of_book_pattern.search(line):
-            logging.info("Found end-of-book marker. Stopping processing.")
+        # 1. Check for End of 
+        if end_of_pattern.search(line):
+            logging.info("Found end-of- marker. Stopping processing.")
             break
 
         # 2. Skip empty lines (we'll handle paragraph spacing later)
@@ -122,10 +122,11 @@ def process_paragraph(text, underscore_pattern, chatter_pattern, typo_map):
         
     return text.strip()
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Cleanup Audiobook Text")
-    parser.add_argument("--input", default="final_audiobook.txt", help="Input text file")
-    parser.add_argument("--output", default="final_audiobook_clean.txt", help="Output text file")
+if _name_ == "_main_":
+    parser = argparse.ArgumentParser(description="Cleanup Audio Text")
+    parser.add_argument("--input", default="final_audio.txt", help="Input text file")
+    parser.add_argument("--output", default="final_audio_clean.txt", help="Output text file")
     args = parser.parse_args()
     
-    clean_audiobook_text(args.input, args.output)
+    clean_audio_text(args.input, args.output)
+

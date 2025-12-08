@@ -14,15 +14,9 @@ from dataclasses import dataclass
 from typing import List, Optional, Tuple, Any, Union
 import importlib
 
-# --- Optimization for Parallel Tesseract ---
-# Set OMP_THREAD_LIMIT to 1 to prevent CPU thrashing when running multiple
-# Tesseract instances in parallel. Each instance will use 1 thread,
-# and we scale via the ThreadPoolExecutor.
 os.environ['OMP_THREAD_LIMIT'] = '1'
 
-# --- Dependency Configuration ---
-# Add Poppler to PATH if not already present
-poppler_path = r"C:\Users\bubga.JULIAN-LAPTOPE2\AppData\Local\Microsoft\WinGet\Packages\oschwartz10612.Poppler_Microsoft.Winget.Source_8wekyb3d8bbwe\poppler-25.07.0\Library\bin"
+=poppler_path = r"C:\Users\bubga.JULIAN-LAPTOPE2\AppData\Local\Microsoft\WinGet\Packages\oschwartz10612.Poppler_Microsoft.Winget.Source_8wekyb3d8bbwe\poppler-25.07.0\Library\bin"
 if poppler_path not in os.environ["PATH"]:
     os.environ["PATH"] += os.pathsep + poppler_path
 
@@ -49,12 +43,12 @@ class ProcessingConfig:
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(_name_)
 
 # Default configuration
 DEFAULT_LLM_FRAMEWORK = "ollama"
 DEFAULT_MODEL_NAME = "mistral"
-DEFAULT_OUTPUT_FILE = "final_audiobook.txt"
+DEFAULT_OUTPUT_FILE = "final_audio.txt"
 DEFAULT_OCR_CONFIG = "--oem 3 --psm 6"
 DEFAULT_PREPROCESS = True
 DEFAULT_TOP_CROP_PERCENTAGE = 7
@@ -267,7 +261,7 @@ def process_page(page_index: int, page_image: Image.Image, config: ProcessingCon
 # --- Main Execution ---
 
 def main():
-    parser = argparse.ArgumentParser(description="OCR PDF and post-process with local LLM for Audiobook creation.")
+    parser = argparse.ArgumentParser(description="OCR PDF and post-process with local LLM for Audio creation.")
     parser.add_argument("input_file", nargs='?', default=DEFAULT_INPUT_FILE, help="Path to the input PDF file.")
     parser.add_argument("-o", "--output", default=DEFAULT_OUTPUT_FILE, help="Output text file path.")
     parser.add_argument("--llm_framework", choices=["transformers", "llama_cpp", "ollama"], default=DEFAULT_LLM_FRAMEWORK, help="LLM framework to use.")
@@ -297,7 +291,7 @@ def main():
         end_page=args.end_page
     )
 
-    logger.info(f"Starting Audiobook OCR pipeline for: {config.input_file}")
+    logger.info(f"Starting Audio OCR pipeline for: {config.input_file}")
     
     if not os.path.exists(config.input_file):
         logger.error(f"Input file does not exist: {config.input_file}")
@@ -375,7 +369,7 @@ def main():
     # Sort results by page index
     all_results.sort(key=lambda x: x[0])
     
-    # 3. Smart Joining for Audiobook Flow
+    # 3. Smart Joining for Audio Flow
     logger.info("Joining text with smart flow logic...")
     final_text_blocks = []
     
@@ -410,11 +404,12 @@ def main():
     # Save to Output File
     with open(config.output_file, 'w', encoding='utf-8') as f:
         f.write(full_corrected_text)
-    logger.info(f"Audiobook-ready text saved to: {config.output_file}")
+    logger.info(f"Audio-ready text saved to: {config.output_file}")
 
     logger.info("OCR and LLM post-processing completed successfully.")
 
-if __name__ == "__main__":
+if _name_ == "_main_":
 
     main()
+
 

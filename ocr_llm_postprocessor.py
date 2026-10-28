@@ -16,8 +16,9 @@ import importlib
 
 os.environ['OMP_THREAD_LIMIT'] = '1'
 
-=poppler_path = r"{Input_Path}"
-if poppler_path not in os.environ["PATH"]:
+# Poppler (needed by pdf2image) can be pointed at with POPPLER_PATH if it is not already on PATH
+poppler_path = os.environ.get("POPPLER_PATH", "")
+if poppler_path and poppler_path not in os.environ["PATH"]:
     os.environ["PATH"] += os.pathsep + poppler_path
 
 # Add Tesseract to PATH if not already present
@@ -43,7 +44,7 @@ class ProcessingConfig:
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(_name_)
+logger = logging.getLogger(__name__)
 
 # Default configuration
 DEFAULT_LLM_FRAMEWORK = "ollama"
@@ -408,7 +409,7 @@ def main():
 
     logger.info("OCR and LLM post-processing completed successfully.")
 
-if _name_ == "_main_":
+if __name__ == "__main__":
 
     main()
 

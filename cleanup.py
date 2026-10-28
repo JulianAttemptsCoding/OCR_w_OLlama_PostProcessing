@@ -44,7 +44,8 @@ def clean_audio_text(input_file: str, output_file: str):
     logging.info("Processing lines...")
     
     buffer_paragraph = []
-    
+    glue_next = False
+
     for line in lines:
         original_line = line
         line = line.strip()
@@ -64,6 +65,7 @@ def clean_audio_text(input_file: str, output_file: str):
                     cleaned_lines.append("") # Add blank line after paragraph
                     previous_paragraph = processed_para
                 buffer_paragraph = []
+                glue_next = False
             continue
 
         # 3. Filter out Page Numbers immediately
@@ -85,11 +87,14 @@ def clean_audio_text(input_file: str, output_file: str):
         line = line.replace('¢', '')
         line = line.replace('©', '') 
         
-        # 7. Accumulate into paragraph buffer
-        if line.endswith('-'):
-            buffer_paragraph.append(line[:-1])
+        # 7. Accumulate into paragraph buffer (a trailing hyphen joins the next line with no space)
+        if glue_next and buffer_paragraph:
+            buffer_paragraph[-1] += line
         else:
             buffer_paragraph.append(line)
+        glue_next = buffer_paragraph[-1].endswith('-')
+        if glue_next:
+            buffer_paragraph[-1] = buffer_paragraph[-1][:-1]
 
     # Process any remaining buffer
     if buffer_paragraph:
@@ -111,7 +116,10 @@ def process_paragraph(text, underscore_pattern, chatter_pattern, typo_map):
     # Apply typo fixes
     for bad, good in typo_map.items():
         text = text.replace(bad, good)
-        
+
+    # Collapse the double spaces left behind by removed artifact characters
+    text = re.sub(r'\s{2,}', ' ', text)
+
     # Double check for chatter that might be embedded
     if chatter_pattern.match(text):
         return None
@@ -122,7 +130,7 @@ def process_paragraph(text, underscore_pattern, chatter_pattern, typo_map):
         
     return text.strip()
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Cleanup Audio Text")
     parser.add_argument("--input", default="final_audio.txt", help="Input text file")
     parser.add_argument("--output", default="final_audio_clean.txt", help="Output text file")
